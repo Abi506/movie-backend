@@ -1,0 +1,51 @@
+###
+POST http://localhost:3000/top-quotes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjIwNjA1Nn0.HdsRPrEvodtw7yiOfd2mttTcxQFVizami1T1Oj-Ilw0
+Content-Type: application/json
+  
+     {
+    "author": "Coco Chanel",
+    "quote": "The most courageous act is still to think for yourself. Aloud.",
+    "explanation": "Coco Chanel celebrates the courage of independent thought and expression, suggesting that true bravery lies in challenging conventional wisdom and voicing ones own beliefs."
+  }
+###
+GET http://localhost:3000/all-quotes?author=Sai%20Baba
+
+###
+GET http://localhost:3000/all-quotes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjIwNjA1Nn0.HdsRPrEvodtw7yiOfd2mttTcxQFVizami1T1Oj-Ilw0
+
+### 
+POST http://localhost:3000/upload-quotes/
+Content-Type: application/json
+   
+    {
+    "author": "Maya Angelou",
+    "quote": "You may not control all the events that happen to you, but you can decide not to be reduced by them.",
+    "explanation": "Maya Angelou speaks to the resilience of the human spirit, suggesting that while we may face adversity, we have the power to rise above it and define our own narrative."
+  }
+
+###
+GET http://localhost:3000/all-quotes/
+
+###
+POST http://localhost:3000/register/
+Content-Type: application/json
+
+  {
+      "username":"abi123",
+      "password":"abinandhan@685",
+      "name":"abinandhan",
+      "gender":"Male",
+      "location":"Aruppukottai"
+
+  }
+
+###
+POST http://localhost:3000/login/
+Content-Type: application/json
+
+  {
+      "username":"abi123",
+      "password":"abinandhan@685"
+  }
