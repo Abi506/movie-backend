@@ -168,6 +168,7 @@ app.get("/all-quotes/", async (request, response) => {
 
   const getAllQuotesArray = await data.all(getAllQuotesQuery);
   response.send(getAllQuotesArray);
+  console.log(getAllQuotesArray);
 });
 
 //get particular quote api
