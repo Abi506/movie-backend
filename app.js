@@ -19,7 +19,7 @@ const databaseAndServerInitialization = async () => {
       driver: sqlite3.Database,
     });
 
-    app.listen(3000, () => {
+    app.listen(3001, () => {
       console.log(`Server running at ${dbPath}`);
     });
   } catch (error) {
@@ -92,6 +92,28 @@ app.post("/login/", async (request, response) => {
   }
 });
 
+const authentication = (request, response, next) => {
+  let jwtToken;
+  const authHeader = request.headers["authorization"];
+  console.log(authHeader, "");
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(" ")[1];
+    jwt.verify(jwtToken, "my_token", async (error, payload) => {
+      console.log(payload, "payload");
+      if (error) {
+        response.status(401);
+        response.send("Invalid JWT token");
+      } else {
+        request.username = payload.username;
+        next();
+      }
+    });
+  } else {
+    response.status(401);
+    response.send("Invalid jwt Token");
+  }
+};
+
 //add quotes api
 app.post("/add-quotes/", async (request, response) => {
   const { quote, explanation, author } = request.body;
@@ -123,12 +145,9 @@ app.get("/author-quotes/", async (request, response) => {
 });
 
 //api to get top quotes
-app.get("/top-quotes/", async (request, response) => {
-  const { author = "" } = request.query;
-  console.log(author, "author");
+app.get("/top-quotes/", authentication, async (request, response) => {
   const getAllQuotesQuery = `
-    SELECT * FROM topquotes
-    `;
+    SELECT * FROM topquotes`;
 
   const getAllQuotesArray = await data.all(getAllQuotesQuery);
   response.send(getAllQuotesArray);
@@ -150,15 +169,21 @@ app.post("/top-quotes/", async (request, response) => {
   response.send("Quotes Added Successfully");
 });
 
+//top quotes delete
+app.delete("/top-quotes/:id", async (request, response) => {
+  const { id } = request.params;
+  const deleteQuery = `
+    DELETE FROM topquotes
+    where id='${id}'
+    `;
+  const deleteArray = await data.run(deleteQuery);
+  response.send("Quote Deleted");
+});
+
 //all quotes section get all quotes,get particular quote,insert quotes in all quotes
 //api to all quotes
 app.get("/all-quotes/", async (request, response) => {
-  const {
-    author = "",
-    search_q = "",
-    order_by = "",
-    order = "",
-  } = request.query;
+  const { search_q = "", order_by = "", order = "" } = request.query;
   console.log(search_q, "author");
   const getAllQuotesQuery = `
     SELECT * FROM allquotes
@@ -175,7 +200,7 @@ app.get("/all-quotes/", async (request, response) => {
 app.get("/all-quotes/:id", async (request, response) => {
   const { id = "" } = request.params;
   const getQuoteQuery = `
-  SELECT * FROM quotes 
+  SELECT * FROM allquotes 
   where id='${id}'
   `;
   const getQuoteArray = await data.get(getQuoteQuery);
@@ -196,4 +221,15 @@ app.post("/upload-quotes/", async (request, response) => {
   const addQuotesArray = await data.run(addQuotesQuery);
   console.log(addQuotesArray, "addQuotesArray");
   response.send("Quotes Added Successfully");
+});
+
+//get user details api
+app.get("/profile/", authentication, async (request, response) => {
+  const { username } = request;
+  const profileQuery = `
+    SELECT * FROM user 
+    WHERE username='${username}'
+    `;
+  const profileDetails = await data.get(profileQuery);
+  console.log(profileDetails);
 });
