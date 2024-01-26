@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 app.use(express.json());
-
+app.use(cors());
 const path = require("path");
 const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
@@ -65,15 +66,17 @@ app.post("/register/", async (request, response) => {
 //login api
 app.post("/login/", async (request, response) => {
   const { username, password } = request.body;
+  console.log(username, "username");
   const isUserExistsQuery = `
     SELECT * FROM user 
     WHERE username='${username}'
     `;
   const dbUser = await data.get(isUserExistsQuery);
+  console.log(dbUser, "dbuserdfndfdnfkjgdfkjndkfgnkdfnjkndf");
   if (dbUser === undefined) {
     //user not exists
     response.status(400);
-    response.send("Invalid User");
+    response.send("Invalid User nandhan");
   } else {
     //user exists
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
