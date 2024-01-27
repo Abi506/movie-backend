@@ -9,10 +9,10 @@ Content-Type: application/json
     "explanation": "Coco Chanel celebrates the courage of independent thought and expression, suggesting that true bravery lies in challenging conventional wisdom and voicing ones own beliefs."
   }
 ###
-GET http://localhost:3000/all-quotes?author=Sai%20Baba
+GET http://localhost:3001/all-quotes?author=Sai%20Baba
 
 ###
-GET http://localhost:3000/all-quotes/
+GET http://localhost:3001/all-quotes?search_q=dreams
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjIwNjA1Nn0.HdsRPrEvodtw7yiOfd2mttTcxQFVizami1T1Oj-Ilw0
 
 ### 
@@ -26,10 +26,11 @@ Content-Type: application/json
   }
 
 ### all quotes get
-GET http://localhost:3001/all-quotes/?search_q=''
+GET http://localhost:3001/all-quotes/?search=''
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
 
 ### get a particular quote from all quotes
-GET http://localhost:3000/all-quotes/11
+GET http://localhost:3001/all-quotes/11
 
 ### register 
 POST http://localhost:3001/register/
@@ -40,7 +41,11 @@ Content-Type: application/json
       "password":"1234",
       "name":"abinandhan",
       "gender":"Male",
-      "location":"Aruppukottai"
+      "location":"Aruppukottai",
+      "age":20,
+      "occupation":"Software Engineer",
+      "mail":"abinandhan123@gmail.com",
+      "mobilenumber":453179687126549
 
   }
 
@@ -61,4 +66,8 @@ DELETE http://localhost:3000/top-quotes/11
 
 ###profile 
 GET http://localhost:3001/profile/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+
+###
+GET http://localhost:3001/author-quotes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4

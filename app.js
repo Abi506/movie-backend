@@ -31,9 +31,19 @@ databaseAndServerInitialization();
 
 //register user api
 app.post("/register/", async (request, response) => {
-  const { username, password, name, gender, age, location } = request.body;
+  const {
+    username,
+    password,
+    name,
+    gender,
+    age,
+    location,
+    occupation,
+    mail,
+    mobilenumber,
+  } = request.body;
   const isUsernameAvailableQuery = `
-  SELECT * FROM user 
+  SELECT * FROM updateduser 
   WHERE username='${username}'
   `;
   const isUsernameAvailableArray = await data.get(isUsernameAvailableQuery);
@@ -43,7 +53,7 @@ app.post("/register/", async (request, response) => {
     //username not exist can create new account
     const hashedPassword = await bcrypt.hash(password, 10);
     const createNewAccountQuery = `
-    INSERT INTO user(username,password,name,gender,age,location)
+    INSERT INTO updateduser(username,password,name,gender,age,location,occupation,mail,mobilenumber)
     VALUES
     (
         '${username}',
@@ -51,7 +61,10 @@ app.post("/register/", async (request, response) => {
         '${name}',
         '${gender}',
         '${age}',
-        '${location}'
+        '${location}',
+        '${occupation}',
+        '${mail}',
+        '${mobilenumber}'
     )
     `;
     const createNewAccountArray = await data.run(createNewAccountQuery);
@@ -68,7 +81,7 @@ app.post("/login/", async (request, response) => {
   const { username, password } = request.body;
   console.log(username, "username");
   const isUserExistsQuery = `
-    SELECT * FROM user 
+    SELECT * FROM updateduser 
     WHERE username='${username}'
     `;
   const dbUser = await data.get(isUserExistsQuery);
@@ -76,7 +89,7 @@ app.post("/login/", async (request, response) => {
   if (dbUser === undefined) {
     //user not exists
     response.status(400);
-    response.send("Invalid User nandhan");
+    response.send({ error_msg: "Invalid User" });
   } else {
     //user exists
     const isPasswordMatched = await bcrypt.compare(password, dbUser.password);
@@ -118,7 +131,7 @@ const authentication = (request, response, next) => {
 };
 
 //add quotes api
-app.post("/add-quotes/", async (request, response) => {
+app.post("/add-quotes/", authentication, async (request, response) => {
   const { quote, explanation, author } = request.body;
   const addQuotesQuery = `
     INSERT INTO quotes(author,quote,explanation)
@@ -133,9 +146,9 @@ app.post("/add-quotes/", async (request, response) => {
   response.send("Quotes Added Successfully");
 });
 
-//get all quotes api
+//get author quotes api
 
-app.get("/author-quotes/", async (request, response) => {
+app.get("/author-quotes/", authentication, async (request, response) => {
   const { author = "" } = request.query;
   console.log(author, "author");
   const getAllQuotesQuery = `
@@ -144,6 +157,7 @@ app.get("/author-quotes/", async (request, response) => {
     `;
 
   const getAllQuotesArray = await data.all(getAllQuotesQuery);
+  console.log(getAllQuotesArray, "author quotes");
   response.send(getAllQuotesArray);
 });
 
@@ -185,22 +199,21 @@ app.delete("/top-quotes/:id", async (request, response) => {
 
 //all quotes section get all quotes,get particular quote,insert quotes in all quotes
 //api to all quotes
-app.get("/all-quotes/", async (request, response) => {
-  const { search_q = "", order_by = "", order = "" } = request.query;
-  console.log(search_q, "author");
+app.get("/all-quotes/", authentication, async (request, response) => {
+  const { search = "", offset = "" } = request.query;
   const getAllQuotesQuery = `
     SELECT * FROM allquotes
-    WHERE author LIKE '%${search_q}%' or quote like '%${search_q}%'
-    order by ${order_by} ${order}
+    WHERE author LIKE '%${search}%' OR quote LIKE '%${search}%'
+    LIMIT 10
     `;
 
   const getAllQuotesArray = await data.all(getAllQuotesQuery);
+  console.log(getAllQuotesArray, "get all quotes");
   response.send(getAllQuotesArray);
-  console.log(getAllQuotesArray);
 });
 
 //get particular quote api
-app.get("/all-quotes/:id", async (request, response) => {
+app.get("/all-quotes/:id", authentication, async (request, response) => {
   const { id = "" } = request.params;
   const getQuoteQuery = `
   SELECT * FROM allquotes 
@@ -230,9 +243,10 @@ app.post("/upload-quotes/", async (request, response) => {
 app.get("/profile/", authentication, async (request, response) => {
   const { username } = request;
   const profileQuery = `
-    SELECT * FROM user 
+    SELECT * FROM updateduser 
     WHERE username='${username}'
     `;
   const profileDetails = await data.get(profileQuery);
   console.log(profileDetails);
+  response.send(profileDetails);
 });
