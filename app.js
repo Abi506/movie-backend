@@ -186,17 +186,6 @@ app.post("/top-quotes/", async (request, response) => {
   response.send("Quotes Added Successfully");
 });
 
-//top quotes delete
-app.delete("/top-quotes/:id", async (request, response) => {
-  const { id } = request.params;
-  const deleteQuery = `
-    DELETE FROM topquotes
-    where id='${id}'
-    `;
-  const deleteArray = await data.run(deleteQuery);
-  response.send("Quote Deleted");
-});
-
 //all quotes section get all quotes,get particular quote,insert quotes in all quotes
 //api to all quotes
 app.get("/all-quotes/", authentication, async (request, response) => {
@@ -249,4 +238,54 @@ app.get("/profile/", authentication, async (request, response) => {
   const profileDetails = await data.get(profileQuery);
   console.log(profileDetails);
   response.send(profileDetails);
+});
+
+//user quotes
+
+//user upload quotes api
+app.post("/my-quotes/", authentication, async (request, response) => {
+  const { quote, explanation, userid } = request.body;
+
+  const userQuotesUploadQuery = `
+  INSERT INTO useruploadedquotes(userid,quote,explanation)
+  VALUES(
+      '${userid}',
+      '${quote}',
+      '${explanation}'
+  )
+  `;
+  const userQuotesUploadArray = await data.run(userQuotesUploadQuery);
+  console.log(userQuotesUploadArray);
+  response.send("Your Quote Uploaded Successfully");
+});
+
+//user uploaded quotes get
+app.get("/my-quotes/", authentication, async (request, response) => {
+  const { username } = request;
+  console.log("username", username);
+  const userUploadedQuotesQuery = `
+    SELECT * FROM useruploadedquotes
+    natural join updateduser
+    WHERE username='${username}'
+    `;
+
+  const userUploadedQuotesArray = await data.all(userUploadedQuotesQuery);
+  console.log(userUploadedQuotesArray);
+});
+
+//user uploaded quotes delete
+app.delete("/my-quotes/:quoteid", authentication, async (request, response) => {
+  const { quoteid } = request.params;
+  const deleteQuery = `
+    DELETE FROM useruploadedquotes 
+    WHERE useruploadedquotes.userid IN (
+      SELECT updateduser.userid 
+      FROM updateduser 
+      WHERE useruploadedquotes.userid = updateduser.userid
+    )
+    AND useruploadedquotes.quoteid = '${quoteid}';
+  `;
+
+  const deleteArray = await data.run(deleteQuery);
+  response.send("Quote Deleted");
 });

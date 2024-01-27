@@ -71,3 +71,22 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFia
 ###
 GET http://localhost:3001/author-quotes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+
+###
+POST http://localhost:3001/my-quotes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+Content-Type: application/json
+
+{
+    "userid":"3",
+    "quote":"here",
+    "explanation":"where"
+}
+
+###
+GET http://localhost:3001/my-quotes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+
+###
+DELETE http://localhost:3001/my-quotes/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
