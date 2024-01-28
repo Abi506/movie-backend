@@ -54,8 +54,8 @@ POST http://localhost:3001/login/
 Content-Type: application/json
 
   {
-      "username":"1234",
-      "password":"1234"
+      "username":"vima",
+      "password":"12345678910"
   }
 ### top quotes get
 GET http://localhost:3001/top-quotes/
@@ -79,14 +79,31 @@ Content-Type: application/json
 
 {
     "userid":"3",
-    "quote":"here",
-    "explanation":"where"
+    "quote":"temp",
+    "explanation":"dfg"
 }
 
 ###
 GET http://localhost:3001/my-quotes/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpbWEiLCJpYXQiOjE3MDY0MTA4MDJ9.i3020NdtcsTGe0kQfG8GrkC4LE4LgrbpGdexcNGPnrw
 
 ###
-DELETE http://localhost:3001/my-quotes/3
+DELETE http://localhost:3001/my-quotes/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjI0MzQwMH0.8iedOxC7DT9Nj-0uii_QQPCg7sjD5SPwdHhz37H7xF4
+Content-Type: application/json
+
+{
+    "quoteid":100
+}
+
+###
+PUT http://localhost:3001/my-quotes/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InZpbWEiLCJpYXQiOjE3MDY0MTA4MDJ9.i3020NdtcsTGe0kQfG8GrkC4LE4LgrbpGdexcNGPnrw
+Content-Type: application/json
+
+{
+    "quoteid":23,
+    "quote":"ashwant",
+    "explanation":"saravanan"
+}
+

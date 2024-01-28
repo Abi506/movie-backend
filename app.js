@@ -271,11 +271,12 @@ app.get("/my-quotes/", authentication, async (request, response) => {
 
   const userUploadedQuotesArray = await data.all(userUploadedQuotesQuery);
   console.log(userUploadedQuotesArray);
+  response.send(userUploadedQuotesArray);
 });
 
 //user uploaded quotes delete
-app.delete("/my-quotes/:quoteid", authentication, async (request, response) => {
-  const { quoteid } = request.params;
+app.delete("/my-quotes/", authentication, async (request, response) => {
+  const { quoteid } = request.body;
   const deleteQuery = `
     DELETE FROM useruploadedquotes 
     WHERE useruploadedquotes.userid IN (
@@ -287,5 +288,15 @@ app.delete("/my-quotes/:quoteid", authentication, async (request, response) => {
   `;
 
   const deleteArray = await data.run(deleteQuery);
-  response.send("Quote Deleted");
+});
+//update user quotes
+app.put("/my-quotes/", authentication, async (request, response) => {
+  const { quoteid, quote, explanation } = request.body;
+  const updateQuery = `
+    UPDATE useruploadedquotes 
+    SET quote='${quote}',explanation='${explanation}'
+    WHERE quoteid='${quoteid}'
+    `;
+  const updateArray = await data.run(updateQuery);
+  response.send("Quote updated Successfully");
 });
