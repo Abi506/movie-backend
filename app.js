@@ -103,7 +103,7 @@ app.post("/login/", async (request, response) => {
     } else {
       //invalid password
       response.status(400);
-      response.send("Invalid Password");
+      response.send({error_msg:"Invalid Password"});
     }
   }
 });
