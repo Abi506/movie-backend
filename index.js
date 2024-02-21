@@ -57,30 +57,3 @@ app.get("/movies/", async (request, response) => {
   console.log(movies);
   response.send(movies);
 });
-
-//user uploaded quotes delete
-app.delete("/my-quotes/",  async (request, response) => {
-  const { quoteid } = request.body;
-  const deleteQuery = `
-    DELETE FROM useruploadedquotes 
-    WHERE useruploadedquotes.userid IN (
-      SELECT updateduser.userid 
-      FROM updateduser 
-      WHERE useruploadedquotes.userid = updateduser.userid
-    )
-    AND useruploadedquotes.quoteid = '${quoteid}';
-  `;
-
-  const deleteArray = await data.run(deleteQuery);
-});
-//update user quotes
-app.put("/my-quotes/",  async (request, response) => {
-  const { quoteid, quote, explanation } = request.body;
-  const updateQuery = `
-    UPDATE useruploadedquotes 
-    SET quote='${quote}',explanation='${explanation}'
-    WHERE quoteid='${quoteid}'
-    `;
-  const updateArray = await data.run(updateQuery);
-  response.send("Quote updated Successfully");
-});
