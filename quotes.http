@@ -1,15 +1,16 @@
 ###
-POST http://localhost:3000/top-quotes/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiaTEyMyIsImlhdCI6MTcwNjIwNjA1Nn0.HdsRPrEvodtw7yiOfd2mttTcxQFVizami1T1Oj-Ilw0
+POST http://localhost:3001/upload-movies/
 Content-Type: application/json
   
      {
-    "author": "Coco Chanel",
-    "quote": "The most courageous act is still to think for yourself. Aloud.",
-    "explanation": "Coco Chanel celebrates the courage of independent thought and expression, suggesting that true bravery lies in challenging conventional wisdom and voicing ones own beliefs."
-  }
+      "id":1,
+      "url":"https://vidsrc.to/embed/movie/tt2180339",
+      "movieName":"Deep Water",
+      "cast":"ana de armas"
+
+     }
 ###
-GET http://localhost:3001/all-quotes?author=Sai%20Baba
+GET http://localhost:3001/movies
 
 ###
 GET http://localhost:3001/all-quotes?search_q=dreams
